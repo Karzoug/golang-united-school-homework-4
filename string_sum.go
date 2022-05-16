@@ -29,24 +29,37 @@ func StringSum(input string) (output string, err error) {
 	if len(input) == 0 {
 		return "", fmt.Errorf("StringSum: %w", errorEmptyInput)
 	}
-	s := strings.Split(input, "+")
+
+	s := make([]string, 0, 2)
+	expr := strings.TrimSpace(input)
+	prev := len(expr)
+	for i := len(expr) - 1; i >= 0; i-- {
+		if expr[i] == '-' || expr[i] == '+' {
+			s = append(s, strings.TrimSpace(expr[i:prev]))
+			prev = i
+		}
+	}
+
+	if prev != 0 {
+		s = append(s, strings.TrimSpace(expr[0:prev]))
+	}
+
 	if len(s) != 2 {
 		return "", fmt.Errorf("StringSum: %w", errorNotTwoOperands)
 	}
-	s1 := strings.TrimSpace(s[0])
-	if len(s1) == 0 {
+
+	if len(s[1]) == 0 {
 		return "", fmt.Errorf("StringSum: first operand is empty\n %w", errorEmptyInput)
 	}
-	s2 := strings.TrimSpace(s[1])
-	if len(s2) == 0 {
+	if len(s[0]) == 0 {
 		return "", fmt.Errorf("StringSum: second operand is empty\n %w", errorEmptyInput)
 	}
 
-	num1, err := strconv.Atoi(s1)
+	num1, err := strconv.Atoi(s[1])
 	if err != nil {
 		return "", fmt.Errorf("StringSum: first operand not valid\n %w", err)
 	}
-	num2, err := strconv.Atoi(s2)
+	num2, err := strconv.Atoi(s[0])
 	if err != nil {
 		return "", fmt.Errorf("StringSum: second operand not valid\n %w", err)
 	}
