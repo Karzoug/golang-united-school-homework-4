@@ -35,13 +35,13 @@ func StringSum(input string) (output string, err error) {
 	prev := len(expr)
 	for i := len(expr) - 1; i >= 0; i-- {
 		if expr[i] == '-' || expr[i] == '+' {
-			s = append(s, strings.TrimSpace(expr[i:prev]))
+			s = append(s, strings.ReplaceAll(expr[i:prev], " ", ""))
 			prev = i
 		}
 	}
 
 	if prev != 0 {
-		s = append(s, strings.TrimSpace(expr[0:prev]))
+		s = append(s, strings.ReplaceAll(expr[0:prev], " ", ""))
 	}
 
 	if len(s) != 2 {
